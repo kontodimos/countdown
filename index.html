@@ -5,104 +5,195 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Adult Party</title>
 <style>
-body { font-family: 'Arial', sans-serif; margin: 0; background: radial-gradient(circle,#1a0b2e,#000); color:#f5e6ff; }
-.nav {
-background: #120720;
-padding: 10px;
-display: flex;
-gap: 10px;
-border-bottom: 1px solid #3a1f6b;
-}
-.nav button {
-padding: 8px 12px;
-border: none;
-cursor: pointer;
-border-radius: 5px;
-background:#2a0f4f;
-color:white;
-}
-.page { display: none; min-height: 90vh; }
-.active { display: block; }
+  body { font-family: 'Arial', sans-serif; margin: 0; background: radial-gradient(circle,#1a0b2e,#000); color:#f5e6ff; }
+  .nav {
+    background: #120720;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    border-bottom: 1px solid #3a1f6b;
+  }
+  .nav button {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    background:#2a0f4f;
+    color:white;
+  }
+  .page { display: none; min-height: 90vh; }
+  .active { display: block; }
 
+  .center {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    height:80vh;
+    text-align:center;
+  }
 
-.center {
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-height:80vh;
-text-align:center;
-}
+  #countdown { font-size:28px; margin:20px; text-shadow:0 0 8px #c47aff; }
 
+  .btns { display:flex; gap:25px; margin-top:20px; }
+  .accept { background:#00a651; color:white; padding:14px 26px; font-size:18px; border:none; cursor:pointer; border-radius:8px; box-shadow:0 0 10px #00ff88; }
+  .reject { background:#d40000; color:white; padding:14px 26px; font-size:18px; border:none; cursor:pointer; border-radius:8px; box-shadow:0 0 10px #ff3333; }
 
-#countdown { font-size:28px; margin:20px; text-shadow:0 0 8px #c47aff; }
+  /* 18+ modal */
+  #ageModal {
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background:rgba(0,0,0,0.9);
+    display:none; align-items:center; justify-content:center;
+  }
+  .age-box {
+    background:#120720; padding:30px; border-radius:12px; text-align:center; border:1px solid #5a2ca8;
+  }
+  .age-box button { margin:10px; padding:10px 18px; }
 
+  /* Ρεαλιστική πόρτα */
+  .door-container { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; }
+  .door-frame { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); }
+  .door-frame img { width:260px; height:auto; transition:1.2s; transform-origin:left center; }
+  .door-frame img.open { transform:rotateY(70deg); }
 
-.btns { display:flex; gap:25px; margin-top:20px; }
-.accept { background:#00a651; color:white; padding:14px 26px; font-size:18px; border:none; cursor:pointer; border-radius:8px; box-shadow:0 0 10px #00ff88; }
-.reject { background:#d40000; color:white; padding:14px 26px; font-size:18px; border:none; cursor:pointer; border-radius:8px; box-shadow:0 0 10px #ff3333; }
-
-
-/* 18+ modal */
-#ageModal {
-position:fixed; top:0; left:0; width:100%; height:100%;
-background:rgba(0,0,0,0.9);
-display:none; align-items:center; justify-content:center;
-}
-.age-box {
-background:#120720; padding:30px; border-radius:12px; text-align:center; border:1px solid #5a2ca8;
-}
-.age-box button { margin:10px; padding:10px 18px; }
-
-
-/* Ρεαλιστική πόρτα */
-.door-container { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; }
-.door-frame { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); }
-.door-frame img { width:260px; height:auto; transition:1.2s; transform-origin:left center; }
-.door-frame img.open { transform:rotateY(70deg); }
-
-
-.party-content { padding:40px; text-align:center; }
-.party-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; max-width:900px; margin:auto; }
-.card { background:#120720; padding:20px; border-radius:12px; border:1px solid #3a1f6b; }
+  .party-content { padding:40px; text-align:center; }
+  .party-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; max-width:900px; margin:auto; }
+  .card { background:#120720; padding:20px; border-radius:12px; border:1px solid #3a1f6b; }
 </style>
 </head>
 <body>
 
-
 <div class="nav">
-<button onclick="goBack()">⬅ Back</button>
-<button onclick="goForward()">Forward ➡</button>
-<button onclick="goHome()">🏠 Home</button>
+  <button onclick="goBack()">⬅ Back</button>
+  <button onclick="goForward()">Forward ➡</button>
+  <button onclick="goHome()">🏠 Home</button>
 </div>
-
 
 <div id="home" class="page active">
-<div class="center">
-<h1>🔥 ADULT PARTY 🔥</h1>
-<p>Έναρξη: 10/02/2026 19:00</p>
-<div id="countdown">Φόρτωση...</div>
-<div class="btns">
-<button class="accept" onclick="askAge()">ACCEPT</button>
-<button class="reject" onclick="rejectParty()">REJECT</button>
+  <div class="center">
+    <h1>🔥 ADULT PARTY 🔥</h1>
+    <p>Έναρξη: 10/02/2026 19:00</p>
+    <div id="countdown">Φόρτωση...</div>
+    <div class="btns">
+      <button class="accept" onclick="askAge()">ACCEPT</button>
+      <button class="reject" onclick="rejectParty()">REJECT</button>
+    </div>
+  </div>
 </div>
-</div>
-</div>
-
 
 <!-- 18+ Προειδοποίηση -->
 <div id="ageModal">
-<div class="age-box">
-<h2>🔞 Είσαι 18+;</h2>
-<p>Αυτό το περιεχόμενο προορίζεται μόνο για ενήλικες.</p>
-<button class="accept" onclick="confirmAge()">ΝΑΙ</button>
-<button class="reject" onclick="rejectParty()">ΟΧΙ</button>
+  <div class="age-box">
+    <h2>🔞 Είσαι 18+;</h2>
+    <p>Αυτό το περιεχόμενο προορίζεται μόνο για ενήλικες.</p>
+    <button class="accept" onclick="confirmAge()">ΝΑΙ</button>
+    <button class="reject" onclick="rejectParty()">ΟΧΙ</button>
+  </div>
 </div>
-</div>
-
 
 <!-- Σελίδα Party -->
 <div id="party" class="page">
-<div class="party-content">
-<h1>🎉 Καλώς ήρθες στο Party 🎉</h1>
+  <div class="party-content">
+    <h1>🎉 Καλώς ήρθες στο Party 🎉</h1>
+    <p>Απόλαυσε την εμπειρία!</p>
+
+    <div class="party-grid">
+      <div class="card"><h3>🍹 Bar</h3><p>Signature cocktails & drinks.</p></div>
+      <div class="card"><h3>🎧 DJ</h3><p>Live set όλη τη νύχτα.</p></div>
+      <div class="card"><h3>💃 Dance Floor</h3><p>Neon lights & vibes.</p></div>
+      <div class="card"><h3>🎁 VIP</h3><p>Exclusive area & perks.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Πόρτα -->
+<div class="door-container" id="doorBox">
+  <div class="door-frame">
+    <img id="doorImg" src="https://i.imgur.com/6z7R3cW.png" alt="door">
+  </div>
+</div>
+
+<audio id="doorSound" src="https://www.fesliyanstudios.com/play-mp3/387"></audio>
+
+<script>
+// -------- ΠΡΩΤΑ: βοηθητικές/handler συναρτήσεις που καλούνται από HTML --------
+function askAge(){
+  document.getElementById('ageModal').style.display = 'flex';
+}
+
+function rejectParty(){
+  window.close();
+}
+
+// -------- Πλοήγηση (ιστορικό) --------
+let historyStack = ['home'];
+let forwardStack = [];
+
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  document.getElementById(p).classList.add('active');
+  historyStack.push(p);
+  forwardStack = [];
+}
+
+function goHome(){ showPage('home'); }
+
+function goBack(){
+  if(historyStack.length > 1){
+    const cur = historyStack.pop();
+    forwardStack.push(cur);
+    showPage(historyStack[historyStack.length - 1]);
+  }
+}
+
+function goForward(){
+  if(forwardStack.length > 0){
+    showPage(forwardStack.pop());
+  }
+}
+
+// -------- Αντίστροφη μέτρηση --------
+const targetDate = new Date('2026-02-10T19:00:00');
+function updateCountdown(){
+  const now = new Date();
+  const diff = targetDate - now;
+  if(diff <= 0){
+    document.getElementById('countdown').textContent = 'Το party ξεκίνησε!';
+    return;
+  }
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff/3600000)%24);
+  const m = Math.floor((diff/60000)%60);
+  const s = Math.floor((diff/1000)%60);
+  document.getElementById('countdown').textContent =
+    d+' ημέρες '+h+' ώρες '+m+' λεπτά '+s+' δευτ.';
+}
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+// -------- Ροή Accept (πόρτα → party) --------
+function confirmAge(){
+  document.getElementById('ageModal').style.display = 'none';
+
+  const box = document.getElementById('doorBox');
+  const door = document.getElementById('doorImg');
+  const sound = document.getElementById('doorSound');
+
+  box.style.display = 'block';
+
+  try { sound.play(); } catch(e) {}
+
+  setTimeout(()=>{ door.classList.add('open'); }, 200);
+
+  setTimeout(()=>{
+    box.style.display = 'none';
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('party').classList.add('active');
+    historyStack.push('party');
+    forwardStack = [];
+  }, 1500);
+}
+</script>
+
+</body>
 </html>
