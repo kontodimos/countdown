@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Αντίστροφη Μέτρηση</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+margin: 0;
+background: #f4f4f4;
+}
+.container {
+text-align: center;
+background: white;
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+#countdown {
+font-size: 24px;
+font-weight: bold;
+margin-top: 10px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Αντίστροφη Μέτρηση</h2>
+<p>Μέχρι: 07/02/2026 13:00</p>
+<div id="countdown">Φόρτωση...</div>
+</div>
+
+
+<script>
+const targetDate = new Date('2026-02-07T13:00:00');
+
+
+function updateCountdown() {
+const now = new Date();
+const diff = targetDate - now;
+
+
+if (diff <= 0) {
+document.getElementById('countdown').textContent = 'Ο χρόνος έληξε!';
+return;
+}
+
+
+const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+const minutes = Math.floor((diff / (1000 * 60)) % 60);
+const seconds = Math.floor((diff / 1000) % 60);
+
+
+document.getElementById('countdown').textContent =
+days + ' ημέρες ' +
+hours + ' ώρες ' +
+minutes + ' λεπτά ' +
+seconds + ' δευτερόλεπτα';
+}
+
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
